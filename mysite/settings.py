@@ -9,24 +9,19 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Setting for Render.com and Local development environment
+SECRET_KEY = os.environ.get("SECRET_KEY", default=config("DEV_SECRET_KEY"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+DEBUG = "RENDER" not in os.environ
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-)c-zc*(ugptw@tpx-z0ap_vdrvthqh#i%w3_8qq%9@f+eldt@e"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = config("DEV_ALLOWED_HOSTS", cast=Csv())
 
 # Application definition
 
