@@ -22,7 +22,27 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default=config("DEV_SECRET_KEY"))
 
 DEBUG = "RENDER" not in os.environ
 
-ALLOWED_HOSTS = config("DEV_ALLOWED_HOSTS", cast=Csv())
+# Databse config
+if DEBUG is True:
+    ALLOWED_HOSTS = config("DEV_ALLOWED_HOSTS", cast=Csv())
+    DB_ENGINE = config("DEV_ENGINE")
+    DB_NAME = config("DEV_NAME")
+    DB_USER = config("DEV_USER")
+    DB_PASSWORD = config("DEV_PASSWORD")
+    DB_HOST = config("DEV_HOST")
+    DB_PORT = config("DEV_PORT")
+    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+else:
+    ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+
+# Set site_ID
+SITE_ID = 1
 
 # Application definition
 
@@ -34,6 +54,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "blog.apps.BlogConfig",
+    "taggit",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
@@ -70,12 +94,24 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": DB_ENGINE,
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+        }
     }
-}
+
+# DATABASES = {
+# "default": {
+# "ENGINE": "django.db.backends.sqlite3",
+# "NAME": BASE_DIR / "db.sqlite3",
+# }
+# }
 
 
 # Password validation
