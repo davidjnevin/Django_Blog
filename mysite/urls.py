@@ -32,5 +32,5 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-    # path("", include("blog.urls", namespace="index")),
+    path("", include("blog.urls", namespace="post_list")),
 ]
