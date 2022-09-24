@@ -25,11 +25,15 @@
     <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-          {% if query %}
+            {% if query %}
+
             <h3>
               {% with results.count as total_results %}
                 Found {{ total_results }} result{{ total_results|pluralize }}
-              {% endwith %}
+            {% endwith %}
+
+            <!-- Divider-->
+            <hr class="my-4" />
             </h3>
             {% for post in results %}
               <h4>
@@ -38,6 +42,9 @@
                 </a>
               </h4>
               {{ post.body|markdown|truncatewords_html:12 }}
+
+            <!-- Divider-->
+            <hr class="my-4" />
             {% empty %}
               <p>There are no results for your query.</p>
             {% endfor %}
@@ -48,7 +55,6 @@
               <input type="submit" value="Search">
             </form>
           {% endif %}
-        
       </div>
     </div>
   </div>
