@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+"""Listings App built following Educative Django COurse September 2020."""
+
 import os
 from pathlib import Path
 
+import dj_database_url
 from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,6 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", default=config("DEV_SECRET_KEY"))
 
 DEBUG = "RENDER" not in os.environ
+
+# DEBUG = config("DEBUG", default=False, cast=bool)
 
 # Databse config
 if DEBUG is True:
